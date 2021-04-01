@@ -12,6 +12,9 @@ var createError = require("http-errors");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
+/* Database */
+var MongoDB = rquire("./mongoDb.js");
+
 var app = express();
 
 // view engine setup
