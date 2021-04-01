@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
-const mongoDatabaseUrl =
-  "mongodb+srv://isaacleong:asdf1234@defaultcluster.h4erx.mongodb.net/local_library?retryWrites=true&w=majority";
+
+const user = "isaacleong";
+const pwd = "asdf1234";
+const database = "local_library";
+
+const mongoDatabaseUrl = `mongodb+srv://${user}:${pwd}@defaultcluster.h4erx.mongodb.net/${database}?retryWrites=true&w=majority`;
 mongoose.connect(mongoDatabaseUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
