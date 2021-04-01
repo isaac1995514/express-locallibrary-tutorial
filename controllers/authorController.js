@@ -1,6 +1,8 @@
 const Author = require("../models/author");
 const Book = require("../models/book");
 
+const { body, validationResult } = require("express-validator");
+
 const async = require("async");
 
 // Display list of all Authors.
@@ -55,12 +57,25 @@ const author_detail = function (req, res) {
 
 // Display Author create form on GET.
 const author_create_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author create GET");
+  res.render("author_form", { title: "Create Author" });
 };
 
 // Handle Author create on POST.
-const author_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author create POST");
+const author_create_post = (req, res, next) => {
+  const { first_name, family_name, date_of_birth } = req.body;
+
+  var author = new Author({
+    first_name,
+    family_name,
+    date_of_birth,
+  });
+  author.save(function (err) {
+    if (err) {
+      return next(err);
+    }
+    // Successful - redirect to new author record.
+    res.redirect(author.url);
+  });
 };
 
 // Display Author delete form on GET.

@@ -82,13 +82,49 @@ exports.book_detail = function (req, res) {
 };
 
 // Display book create form on GET.
-exports.book_create_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: Book create GET");
+exports.book_create_get = function (req, res, next) {
+  const authors = (callback) => Author.find(callback);
+  const genres = (callback) => Genre.find(callback);
+
+  // Get all authors and genres, which we can use for adding to our book.
+  async.parallel(
+    {
+      authors,
+      genres,
+    },
+    function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      res.render("book_form", {
+        title: "Create Book",
+        authors: results.authors,
+        genres: results.genres,
+      });
+    }
+  );
 };
 
 // Handle book create on POST.
-exports.book_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Book create POST");
+exports.book_create_post = (req, res, next) => {
+  const { title, author, summary, isbn, genre } = req.body;
+
+  var book = new Book({
+    title,
+    author,
+    summary,
+    isbn,
+    genre,
+  });
+
+  // Data from form is valid. Save book.
+  book.save(function (err) {
+    if (err) {
+      return next(err);
+    }
+    //successful - redirect to new book record.
+    res.redirect(book.url);
+  });
 };
 
 // Display book delete form on GET.
