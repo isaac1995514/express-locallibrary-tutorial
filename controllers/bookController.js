@@ -1,7 +1,42 @@
 const Book = require("../models/book");
+const Author = require("../models/author");
+const Genre = require("../models/genre");
+const BookInstance = require("../models/bookinstance");
+
+const async = require("async");
 
 exports.index = function (req, res) {
-  res.send("NOT IMPLEMENTED: Site Home Page");
+  // Empty condition is refer to select all
+  const countBook = (callback) => Book.countDocuments({}, callback);
+
+  const countBookInstance = (callback) =>
+    BookInstance.countDocuments({}, callback);
+
+  const countAvailableBookInstance = (callback) =>
+    BookInstance.countDocuments({ status: "Available" }, callback);
+
+  const countAuthor = (callback) => Author.countDocuments({}, callback);
+
+  const countGenre = (callback) => Genre.countDocuments({}, callback);
+
+  const controllerCallback = (err, results) => {
+    res.render("index", {
+      title: "Local Library Home",
+      error: err,
+      data: results,
+    });
+  };
+
+  async.parallel(
+    {
+      countBook,
+      countBookInstance,
+      countAvailableBookInstance,
+      countAuthor,
+      countGenre,
+    },
+    controllerCallback
+  );
 };
 
 // Display list of all books.
