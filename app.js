@@ -11,9 +11,10 @@ var createError = require("http-errors");
 /* Routers */
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var catalogRouter = require("./routes/catalog");
 
 /* Database */
-var MongoDB = rquire("./mongoDb.js");
+var MongoDB = require("./mongoDb.js");
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, "public")));
 /* Route Handler setup */
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/catalog", catalogRouter);
 
 /* Response Middleware setup */
 
