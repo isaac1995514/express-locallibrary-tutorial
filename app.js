@@ -13,14 +13,20 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var catalogRouter = require("./routes/catalog");
 
+/* GraphQL */
+const { apolloServer } = require("./graphQL");
+
 /* Database */
 var MongoDB = require("./mongoDb.js");
 
 var app = express();
 
+// Apply GraphQL Server
+apolloServer.applyMiddleware({ app });
+
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 /* Request Middlewares setup */
 app.use(logger("dev"));
